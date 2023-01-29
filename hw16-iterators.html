@@ -1,0 +1,69 @@
+<body>
+    <script>
+
+
+const films = [
+            {
+                name: 'Back to the future',
+                year: 1985,
+                category: ['fantasy']
+            },
+            {
+                name: 'Titanic',
+                year: 1997,
+                category: ['drama', 'fantasy']
+            },
+            {
+                name: 'The Shawshank Redemption',
+                year: 1994,
+                category: ['drama']
+            }
+
+        ];
+
+        
+        const groupByProperty = (list, property) => {
+        const map = list.reduce((map, item) => {
+            item[property].forEach(x => {
+                if (!map[x]) {
+                    map[x] = [];
+                }
+
+                map[x].push(item);
+            });
+
+            return map;
+        }, {} );
+
+        map[Symbol.iterator] = function () {
+            const values = [...new Set(Object.values(this).flatMap(x => x))];
+            let index = 0;
+
+        return {
+            next() {
+              if (index == values.length) {
+                return {
+                  done: true,
+                }
+              }
+              return {
+                done: false,
+                value: values[index++],
+              }
+            }
+          }
+        }
+
+        return map;
+
+      }
+
+      const filmsGroup = groupByProperty(films, 'category');
+
+      for (const film of filmsGroup) {
+        console.log('film', film);
+      }
+
+
+    </script>
+</body>
